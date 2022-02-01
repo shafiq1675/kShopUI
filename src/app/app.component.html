@@ -1,2 +1,11 @@
-<h1>kShop App</h1>
-<router-outlet></router-outlet>
+<p>
+  <mat-toolbar color="primary">
+    <span><h1>kShop Application</h1></span>
+    <button mat-button routerLink="..">Home</button>
+    <button mat-button routerLink="/customer-setup">Customer Setup</button>
+    <button mat-button>Product Setup</button>
+  </mat-toolbar>
+</p>
+<div class="content"> 
+  <router-outlet></router-outlet>
+</div>
