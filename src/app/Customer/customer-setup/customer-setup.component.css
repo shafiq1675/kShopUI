@@ -6,11 +6,15 @@
 
   .customer-form{
     min-width: 150px;
-    max-width: 1000px;
+    max-width: 2000px;
     width: 100%;
   }
 
   .customer-full-width {
     width: 100%;
+  }
+
+  .mat-card{
+      width: 1260px;
   }
 
