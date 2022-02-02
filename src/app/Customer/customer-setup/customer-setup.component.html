@@ -1,19 +1,19 @@
 
 <mat-card>
   <mat-card-title>Customer Setup</mat-card-title>
-
-<form class="customer-form">
+<hr />
+<form class="customer-form" [formGroup]="customerForm" (ngSubmit)="submitForm()">
   <mat-form-field class="customer-full-width " appearance="fill">
     <mat-label>Name</mat-label>
-    <input matInput>
+    <input matInput formControlName="name">
   </mat-form-field>
   <mat-form-field class="customer-full-width " appearance="fill">
     <mat-label>Mobile Number</mat-label>
-    <input matInput>
+    <input matInput formControlName="mobileNumber">
   </mat-form-field>
   <mat-form-field class="customer-full-width " appearance="fill">
     <mat-label>Email</mat-label>
-    <input matInput>
+    <input matInput formControlName="email">
   </mat-form-field>
   <!-- <mat-form-field class="customer-full-width " appearance="fill">
     <mat-label>Select</mat-label>
@@ -24,7 +24,7 @@
   </mat-form-field> -->
   <mat-form-field class="customer-full-width " appearance="fill">
     <mat-label>Address</mat-label>
-    <textarea matInput></textarea>
+    <textarea matInput formControlName="address"></textarea>
   </mat-form-field>
   
   <div>

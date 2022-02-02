@@ -14,20 +14,24 @@ import { FormsModule} from '@angular/forms';
 // import {MatFormFieldModule} from '@angular/material/form-field';
 // import {MatSelectModule} from '@angular/material/select';
 import {MaterialExampleModule} from '../material.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CustomerSetupComponent,
     ProductSetupComponent,
-    ProductOrderComponent
+    ProductOrderComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
-    MaterialExampleModule
+    MaterialExampleModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

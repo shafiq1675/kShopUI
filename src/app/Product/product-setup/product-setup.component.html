@@ -1,15 +1,15 @@
 
 <mat-card>
     <mat-card-title>Product Setup</mat-card-title>
-  
-  <form class="customer-form">
+  <hr />
+  <form class="customer-form" [formGroup] = "productForm" (ngSubmit)="submitForm()">
     <mat-form-field class="customer-full-width " appearance="fill">
         <mat-label>Product ID</mat-label>
-        <input matInput>
+        <input matInput formControlName="productId">
     </mat-form-field>
     <mat-form-field class="customer-full-width " appearance="fill">
       <mat-label>Product Name</mat-label>
-      <input matInput>
+      <input matInput formControlName="productName">
     </mat-form-field>
     <!-- <mat-form-field class="customer-full-width " appearance="fill">
       <mat-label>Quantity</mat-label>
@@ -17,14 +17,14 @@
     </mat-form-field> -->
     <mat-form-field class="customer-full-width " appearance="fill">
       <mat-label>Product Type</mat-label>
-      <mat-select>
+      <mat-select formControlName="productType">
         <mat-option value="one">First option</mat-option>
         <mat-option value="two">Second option</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field class="customer-full-width " appearance="fill">
       <mat-label>Description</mat-label>
-      <textarea matInput></textarea>
+      <textarea matInput formControlName="productDescription"></textarea>
     </mat-form-field>
     
     <div>

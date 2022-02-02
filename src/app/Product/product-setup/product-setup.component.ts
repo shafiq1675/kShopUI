@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-product-setup',
@@ -7,9 +8,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductSetupComponent implements OnInit {
 
-  constructor() { }
+  productForm!: FormGroup;
+  constructor(public fb: FormBuilder) { }
 
   ngOnInit(): void {
+    this.reactiveForm();
   }
 
+  reactiveForm() {
+    this.productForm = this.fb.group({
+      productId: [''],
+      productName: [''],
+      productType: [''],
+      productDescription: [''],
+
+    });
+    
+  }
+
+  submitForm() {
+    console.log(this.productForm.value);
+  }
 }
