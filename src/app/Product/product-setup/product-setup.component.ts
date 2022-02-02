@@ -20,6 +20,7 @@ export class ProductSetupComponent implements OnInit {
       productId: [''],
       productName: [''],
       productType: [''],
+      productPrice: [''],
       productDescription: [''],
 
     });
