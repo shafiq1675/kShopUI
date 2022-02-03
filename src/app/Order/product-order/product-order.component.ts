@@ -9,9 +9,7 @@ export interface PeriodicElement {
   position: number;
   weight: number;
   symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
+}let ELEMENT_DATA: PeriodicElement[] = [
   {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
   {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
   {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
@@ -70,7 +68,7 @@ export class ProductOrderComponent implements OnInit {
     console.log(this.customerForm.value); 
     const randomElementIndex = Math.floor(Math.random() * ELEMENT_DATA.length);
     const cname = this.customerForm.value.customerId;
-    if(this.userExists(cname)){
+    if(this.isExistsInTheCart(cname)){
 
     }
     else{
@@ -79,10 +77,16 @@ export class ProductOrderComponent implements OnInit {
     }
   }
 
-  userExists(name: any) {
+  isExistsInTheCart(name: any) {
     return this.dataToDisplay.some(function(el) {
       return el.name === name;
     }); 
+  }
+
+  changeCustomer()
+  {
+    alert("");
+    ELEMENT_DATA = [];
   }
 
 

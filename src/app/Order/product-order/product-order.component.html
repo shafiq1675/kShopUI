@@ -5,7 +5,7 @@
   <form class="customer-form" [formGroup]="customerForm" (ngSubmit)="submitForm()">
     <mat-form-field class="customer-full-width " appearance="fill">
         <mat-label>Customer Name</mat-label>
-        <mat-select formControlName="customerId" >
+        <mat-select formControlName="customerId" (change)="changeCustomer()" >
             <mat-option *ngFor="let option of options" [value]="option.id">
                 {{option.id}}-{{option.name}}
             </mat-option>
@@ -24,9 +24,9 @@
       <input matInput formControlName="productQuantity">
     </mat-form-field>
 
-    <mat-label>Unit Price: {{price == 0 ? '' : price | currency:'USD':true}}</mat-label> <br />
+    <mat-label>Unit Price: {{price == 0 ? '' : price | currency:'USD':'symbol-narrow'}}</mat-label> <br />
     <mat-label>Quantity: {{ 2 }}</mat-label> <br />
-    <mat-label>Sub total: {{10 | currency:'USD':true}}</mat-label>
+    <mat-label>Sub total: {{10 | currency:'USD':'symbol-narrow'}}</mat-label>
 
     <hr />
 
