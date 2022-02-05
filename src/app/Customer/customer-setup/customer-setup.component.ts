@@ -11,11 +11,13 @@ import { CustomerServiceService } from '../customer-service.service';
 })
 export class CustomerSetupComponent implements OnInit {
   private customer: Customercls = new Customercls();
+  private listOfCustomer: Customercls [] = [];
   customerForm!: FormGroup;
   constructor(public fb: FormBuilder, private customerService: CustomerServiceService) { }
 
   ngOnInit(): void {
     this.reactiveForm();
+    this.getAllCustomer();
   }
 
   reactiveForm() {
@@ -34,6 +36,11 @@ export class CustomerSetupComponent implements OnInit {
     this.customer = new Customercls(this.customerForm.value);
     this.customerService.saveCustomer(this.customerForm.value);
     console.log(this.customer);
+  }
+
+  getAllCustomer() {    
+    this.customerService.getAllCustomer();
+    console.log("hello");
   }
 
 }

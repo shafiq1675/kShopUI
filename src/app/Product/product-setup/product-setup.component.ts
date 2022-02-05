@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ProductSetupService } from '../product-setup.service';
 
 @Component({
   selector: 'app-product-setup',
@@ -9,7 +10,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class ProductSetupComponent implements OnInit {
 
   productForm!: FormGroup;
-  constructor(public fb: FormBuilder) { }
+  constructor(public fb: FormBuilder, private productService: ProductSetupService) { }
 
   ngOnInit(): void {
     this.reactiveForm();
@@ -21,7 +22,7 @@ export class ProductSetupComponent implements OnInit {
       productName: [''],
       productType: [''],
       productPrice: [''],
-      productDescription: [''],
+      Description: [''],
 
     });
     
@@ -29,5 +30,6 @@ export class ProductSetupComponent implements OnInit {
 
   submitForm() {
     console.log(this.productForm.value);
+    this.productService.saveProduct(this.productForm.value);
   }
 }

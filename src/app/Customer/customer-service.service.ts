@@ -26,4 +26,15 @@ export class CustomerServiceService {
         return console.log(data);
     })
   }
+
+  getAllCustomer() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json; charset=utf-8'
+        })
+      };
+    this.http.get<any>('https://localhost:44352/Customer').subscribe(data => {
+        return console.log(data);
+    })
+  }
 }
