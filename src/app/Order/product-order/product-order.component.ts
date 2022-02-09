@@ -31,7 +31,7 @@ export interface PeriodicElement {
 export class ProductOrderComponent implements OnInit {
   price!: number;
   
-  options: Customer[] = [
+  options: any[] = [
     {id:'001', name: 'khan'},
     {id:'002', name: 'khan2'},
   ];

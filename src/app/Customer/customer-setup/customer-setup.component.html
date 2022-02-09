@@ -33,5 +33,57 @@
   
   </form>
 </mat-card>
+<hr />
+<mat-card>
+  <mat-card-title>Customer List</mat-card-title>
+  <table mat-table [dataSource]="dataSourceM" class="mat-elevation-z8">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+  
+          
+    <ng-container matColumnDef="customerId">
+      <th mat-header-cell *matHeaderCellDef> Customer Id  </th>
+      <td mat-cell *matCellDef="let element"> {{element.customerId}} </td>
+    </ng-container>
+    <!-- Position Column -->
+    <ng-container matColumnDef="customerName">
+      <th mat-header-cell *matHeaderCellDef> Customer Name  </th>
+      <td mat-cell *matCellDef="let element"> {{element.customerName}} </td>
+    </ng-container>
+  
+    <!-- Name Column -->
+    <ng-container matColumnDef="mobileNumber">
+      <th mat-header-cell *matHeaderCellDef> Phone Number</th>
+      <td mat-cell *matCellDef="let element"> {{element.mobileNumber}} </td>
+    </ng-container>
+  
+    <!-- Weight Column -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> Email </th>
+      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+    </ng-container>
+  
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef> Address </th>
+      <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <mat-header-cell  *matHeaderCellDef > Actions </mat-header-cell>
+      <mat-cell *matCellDef="let element" >
+           <button  mat-button (click)="setCustomer(element.customerId)">Edit</button>
+      </mat-cell>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
+</mat-card>
+
+
+<!-- <mat-list role="list">
+  <mat-list-item role="listitem" *ngFor="let item of customers">{{item | json}}</mat-list-item>
+</mat-list> -->
 
 
