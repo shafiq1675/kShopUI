@@ -12,6 +12,7 @@ import { Product } from 'src/app/Models/product';
 import { ProductOrderDetails } from 'src/app/Models/product-order-details';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { ProductOrderService } from '../product-order.service';
 
 export interface PeriodicElement {
   name: string;
@@ -46,7 +47,8 @@ export class ProductOrderComponent implements OnInit {
 
 
   customerForm!: FormGroup;
-  constructor(public fb: FormBuilder, private customerService: CustomerServiceService, private productService: ProductSetupService) { }
+  constructor(public fb: FormBuilder, private customerService: CustomerServiceService, private productService: ProductSetupService, 
+    private orderService: ProductOrderService) { }
 
   ngOnInit(): void {
     this.tableDataSource.paginator = this.paginator;
@@ -151,12 +153,14 @@ export class ProductOrderComponent implements OnInit {
 
   saveOrder(): void
   {
-    let orDetails = {
-      customerId: this.customerForm.value.customerId,
-      orderDetails : this.productArray
-    }
-    console.log(orDetails);
-    alert("Order Saved succes.");
+   
+    let orderDetails = this.productArray;
+    console.log(orderDetails);
+    this.orderService.saveProductOrder(orderDetails, this.customerForm.value.customerId).subscribe(res=>{
+      console.log(res);
+      alert(res.message);
+
+    })
   }
 
 
