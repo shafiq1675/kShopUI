@@ -1,26 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable,ReplaySubject  } from 'rxjs';
 import { Customer } from 'src/app/Models/customer';
 import {DataSource} from '@angular/cdk/collections';
+import { Customercls } from 'src/app/Models/customercls';
+import { CustomerServiceService } from 'src/app/Customer/customer-service.service';
+import { ProductSetupService } from 'src/app/Product/product-setup.service';
+import { ResponseE } from 'src/app/Models/response';
+import { Productcls } from 'src/app/Models/productcls';
+import { Product } from 'src/app/Models/product';
+import { ProductOrderDetails } from 'src/app/Models/product-order-details';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 export interface PeriodicElement {
   name: string;
   position: number;
   weight: number;
   symbol: string;
-}let ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
+}
+let ELEMENT_DATA: ProductOrderDetails[] = [];
 
 @Component({
   selector: 'app-product-order',
@@ -29,32 +28,40 @@ export interface PeriodicElement {
 })
 
 export class ProductOrderComponent implements OnInit {
-  price!: number;
+  price: number = 0;
+  qty: number = 0;
+  subTotal: number =0;
+  public customers: Customercls[] = [] ;
+  public response: ResponseE | undefined;
+  public product: Productcls = new Productcls();
+
   
-  options: any[] = [
-    {id:'001', name: 'khan'},
-    {id:'002', name: 'khan2'},
-  ];
+  optionsCustomer: any[] = [];
+  optionsProduct: any[] = [];
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataToDisplay = [...ELEMENT_DATA];
-
-  dataSource = new ExampleDataSource(this.dataToDisplay);
+  displayedColumns: string[] = ['productId', 'productName', 'productPrice', 'productQuantity' , 'subTotal'];
+  productArray : ProductOrderDetails [] = [];
+  tableDataSource = new MatTableDataSource<ProductOrderDetails>([]);
+  @ViewChild(MatPaginator, { static: true })  paginator!: MatPaginator;
 
 
   customerForm!: FormGroup;
-  constructor(public fb: FormBuilder) { }
+  constructor(public fb: FormBuilder, private customerService: CustomerServiceService, private productService: ProductSetupService) { }
 
   ngOnInit(): void {
+    this.tableDataSource.paginator = this.paginator;
     this.reactiveForm();    
-    this.price = 100;
+    this.price = 0;
+    this.setCustomerDropdown();
+    this.setProductDropdown();
+
   }
 
   reactiveForm() {
     this.customerForm = this.fb.group({
       customerId: [''],
       productId: [''],
-      productQuantity: ['']
+      productQuantity: [1,]
 
     });
     
@@ -67,46 +74,91 @@ export class ProductOrderComponent implements OnInit {
   addToCart(){
     console.log(this.customerForm.value); 
     const randomElementIndex = Math.floor(Math.random() * ELEMENT_DATA.length);
-    const cname = this.customerForm.value.customerId;
-    if(this.isExistsInTheCart(cname)){
-
+    const productId = this.customerForm.value.productId;
+    alert(productId);
+    if(this.isExistsInTheCart(productId)){
+      alert("Product already exist in the cart.");
     }
     else{
-      this.dataToDisplay = [...this.dataToDisplay, {position: 100, name: this.customerForm.value.customerId, weight: 200.2, symbol: 'K'}];
-      this.dataSource.setData(this.dataToDisplay);
+      let ordDetails= {
+        productId: this.customerForm.value.productId,
+        productName: this.customerForm.value.productId,
+        productPrice: this.price,
+        productQuantity: this.qty,
+        subTotal : this.subTotal,
+
+      };
+      this.productArray.push(ordDetails);
+      this.tableDataSource.data = this.productArray;
+      // this.dataToDisplay = [...this.dataToDisplay, {productId: '1', productName: 'Hydrogen', productPrice: 1.0079, productQuantity: 1, subTotal: 100}];
+      // this.dataSource.setData(this.dataToDisplay);
     }
   }
 
-  isExistsInTheCart(name: any) {
-    return this.dataToDisplay.some(function(el) {
-      return el.name === name;
+  isExistsInTheCart(productId: any) {
+    return this.productArray.some(function(el) {
+      return el.productId === productId;
     }); 
   }
 
-  changeCustomer()
+  changeCustomer(id: number): void
   {
-    alert("");
-    ELEMENT_DATA = [];
+    this.productArray = [];
+    this.tableDataSource.data = this.productArray;
+    this.price = 0;
+    this.qty = 0;
+    this.subTotal= 0;
+
+  }
+
+  changeProduct(id: string): void
+  {
+    
+    this.productService.getProduct(id).subscribe(res=>{
+      this.response=res;
+      this.product = this.response.data;
+      this.price=this.product.productPrice == undefined?0:this.product.productPrice;
+      this.qty = this.customerForm.value.productQuantity;
+      this.subTotal = this.price*this.qty;
+    })
+  }
+
+  setCustomerDropdown(): void{
+    this.customerService.getAllCustomer().subscribe(data=>{
+      this.response = data;
+      this.optionsCustomer = this.response.data;
+    });
+  }
+
+  setProductDropdown(): void{
+    this.productService.getAllProduct().subscribe(data=>{
+      this.response = data;
+      this.optionsProduct = this.response.data;
+    });
+  }
+
+  qtyChange(qty : string): void{
+    
+    this.productService.getProduct(this.customerForm.value.productId).subscribe(res=>{
+      this.response=res;
+      this.product = this.response.data;
+      this.price=this.product.productPrice == undefined?0:this.product.productPrice;
+      this.qty = this.customerForm.value.productQuantity;
+      this.subTotal = this.price*this.qty;
+    })
+
+  }
+
+  saveOrder(): void
+  {
+    let orDetails = {
+      customerId: this.customerForm.value.customerId,
+      orderDetails : this.productArray
+    }
+    console.log(orDetails);
+    alert("Order Saved succes.");
   }
 
 
 }
 
-class ExampleDataSource extends DataSource<PeriodicElement> {
-  private _dataStream = new ReplaySubject<PeriodicElement[]>();
-
-  constructor(initialData: PeriodicElement[]) {
-    super();
-    this.setData(initialData);
-  }
-
-  connect(): Observable<PeriodicElement[]> {
-    return this._dataStream;
-  }
-
-  disconnect() {}
-
-  setData(data: PeriodicElement[]) {
-    this._dataStream.next(data);
-  }
-}

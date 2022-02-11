@@ -34,6 +34,7 @@ export class CustomerSetupComponent implements OnInit {
 
   reactiveForm() {
     this.customerForm = this.fb.group({
+      customerId: [''],
       customerName: [''],
       mobileNumber: [''],
       email: [''],
@@ -74,6 +75,7 @@ export class CustomerSetupComponent implements OnInit {
         // console.log(this.response.message);
         // console.log(this.response.status);
         // console.log(this.response.responseTime);
+        // this.customer = this.response.data[0];
         this.customers = this.response.data;
         this.dataSource = [];
         for(let i =0; i<this.response.data.length; i++){
@@ -89,8 +91,27 @@ export class CustomerSetupComponent implements OnInit {
     
   }
 
+  
+
   setCustomer(id : number){
     alert(id);
+    this.customerService.getCustomer(id).subscribe(data => 
+      {
+        // console.log(data);
+        this.response = data;
+        // console.log(this.response.data);
+        // console.log(this.response.message);
+        // console.log(this.response.status);
+        // console.log(this.response.responseTime);
+        console.log(this.response.data);
+
+        this.customer = this.response.data;
+
+        
+
+      }
+      
+    );
   }
 
 }

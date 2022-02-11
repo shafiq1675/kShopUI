@@ -6,5 +6,5 @@ export class Productcls {
     public productName: string | undefined;
     public productType: string | undefined;
     public productPrice: number | undefined ;
-    public Description: string | undefined;
+    public description: string | undefined;
 }

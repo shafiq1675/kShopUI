@@ -1,32 +1,32 @@
 
 <mat-card class="mat-card-one">
-    <mat-card-title>Customer Setup</mat-card-title>
+    <mat-card-title>Order a Prodeuct</mat-card-title>
   <hr />
   <form class="customer-form" [formGroup]="customerForm" (ngSubmit)="submitForm()">
     <mat-form-field class="customer-full-width " appearance="fill">
         <mat-label>Customer Name</mat-label>
-        <mat-select formControlName="customerId" (change)="changeCustomer()" >
-            <mat-option *ngFor="let option of options" [value]="option.id">
-                {{option.id}}-{{option.name}}
+        <mat-select formControlName="customerId" #mySelect (selectionChange)="changeCustomer(mySelect.value)" >
+            <mat-option *ngFor="let option of optionsCustomer" [value]="option.customerId">
+                {{option.customerId}}-{{option.customerName}}
             </mat-option>
         </mat-select>
     </mat-form-field>
     <mat-form-field class="customer-full-width " appearance="fill">
-        <mat-label >Customer Name</mat-label>
-        <mat-select formControlName="productId">
-            <mat-option *ngFor="let option of options" [value]="option.id">
-                {{option.id}}-{{option.name}}
+        <mat-label >Product Name</mat-label>
+        <mat-select formControlName="productId" #myProduct (selectionChange)="changeProduct(myProduct.value)">
+            <mat-option *ngFor="let option of optionsProduct" [value]="option.productId">
+                {{option.productId}}-{{option.productName}}
             </mat-option>
         </mat-select>
       </mat-form-field>
     <mat-form-field class="customer-full-width " appearance="fill">
       <mat-label>Product Quantity</mat-label>
-      <input matInput formControlName="productQuantity">
+      <input matInput formControlName="productQuantity" #qtyValue (change)="qtyChange(qtyValue.value)">
     </mat-form-field>
 
-    <mat-label>Unit Price: {{price == 0 ? '' : price | currency:'USD':'symbol-narrow'}}</mat-label> <br />
-    <mat-label>Quantity: {{ 2 }}</mat-label> <br />
-    <mat-label>Sub total: {{10 | currency:'USD':'symbol-narrow'}}</mat-label>
+    <mat-label class="md-title">Unit Price: {{price | currency:'USD':'symbol-narrow'}}</mat-label> <br />
+    <mat-label >Quantity: {{ qty }}</mat-label> <br />
+    <mat-label >Sub total: {{subTotal | currency:'USD':'symbol-narrow'}}</mat-label>
 
     <hr />
 
@@ -34,37 +34,42 @@
         <button (click)="addToCart()" type="button" mat-raised-button color="primary">Add To Cart <mat-icon>add_shopping_cart</mat-icon></button> 
     </div>
 
-    
+  <hr />
   <mat-card>
     <mat-card-title>Cart Details</mat-card-title>
   <hr />
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" >
+  <table mat-table [dataSource]="tableDataSource" class="mat-elevation-z8" >
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
   
     <!-- Position Column -->
-    <ng-container matColumnDef="position">
-      <th mat-header-cell *matHeaderCellDef> No. </th>
-      <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+    <ng-container matColumnDef="productId">
+      <th mat-header-cell *matHeaderCellDef> Product ID </th>
+      <td mat-cell *matCellDef="let element"> {{element.productId}} </td>
     </ng-container>
   
     <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    <ng-container matColumnDef="productName">
+      <th mat-header-cell *matHeaderCellDef> Product Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.productName}} </td>
     </ng-container>
   
     <!-- Weight Column -->
-    <ng-container matColumnDef="weight">
-      <th mat-header-cell *matHeaderCellDef> Weight </th>
-      <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+    <ng-container matColumnDef="productPrice">
+      <th mat-header-cell *matHeaderCellDef> Product Price </th>
+      <td mat-cell *matCellDef="let element"> {{element.productPrice}} </td>
     </ng-container>
   
     <!-- Symbol Column -->
-    <ng-container matColumnDef="symbol">
-      <th mat-header-cell *matHeaderCellDef> Symbol </th>
-      <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+    <ng-container matColumnDef="productQuantity">
+      <th mat-header-cell *matHeaderCellDef> Quantity </th>
+      <td mat-cell *matCellDef="let element"> {{element.productQuantity}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="subTotal">
+      <th mat-header-cell *matHeaderCellDef> Sub Total </th>
+      <td mat-cell *matCellDef="let element"> {{element.subTotal}} </td>
     </ng-container>
   
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -75,7 +80,7 @@
   </mat-card>
   
 <div style="margin-top: 10px;">
-    <button mat-raised-button color="primary">Place Order<mat-icon>save</mat-icon></button> 
+    <button mat-raised-button color="primary" (click)="saveOrder()">Place Order<mat-icon>save</mat-icon></button> 
 </div>
   
     </form>

@@ -47,5 +47,9 @@ export class CustomerServiceService {
   getAllCustomer() :Observable<ResponseE> {
     return this.http.get<ResponseE>('https://localhost:44352/Customer'); // no need for '.map((res: Response) => res.json())' 
    }
+
+   getCustomer(id:number) :Observable<ResponseE> {
+    return this.http.get<ResponseE>('https://localhost:44352/Customer/'+id); // no need for '.map((res: Response) => res.json())' 
+   }
   
 }
